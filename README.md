@@ -3,6 +3,7 @@
 Display specific portions of an image, and animate between sprites.
 
 [Desktop Atlas Editor/Demo](https://react-texture-atlas.quazchick.com)
+[![Desktop Atlas Editor/Demo](https://assets.quazchick.com/react-texture-atlas/editor.png)](https://react-texture-atlas.quazchick.com)
 
 ## Contents
 
@@ -87,7 +88,7 @@ URL source of the image - can be an array of sources creating tiled atlases with
 
 ---
 
-**`alt?: string;`**
+**`alt?: string`**
 
 Alternate text for image (defaults to `""`)
 
@@ -105,25 +106,25 @@ Image loading (defaults to `eager`)
 
 ---
 
-**`draggable?: 'true' | 'false';`**
+**`draggable?: 'true' | 'false'`**
 
 Image draggability (defaults to `true`)
 
 ---
 
-**`width: number;`**
+**`width: number`**
 
 Pixel width of the atlas' output (output size ratio should be the same as UV size ratio)
 
 ---
 
-**`height: number;`**
+**`height: number`**
 
 Pixel height of the atlas' output
 
 ---
 
-**`uv: { ... };`**
+**`uv: { ... }`**
 
 Portion of the source image visible:
 
@@ -145,7 +146,7 @@ Y position of the UV (from the top) - (defaults to `0`)
 
 ---
 
-**`base: { ... };`**
+**`base: { ... }`**
 
 Dimensions of the source image
 
@@ -159,7 +160,7 @@ Pixel height of the source
 
 ---
 
-**`animation?: { ... } | false;`**
+**`animation?: { ... } | false`**
 
 Settings for the atlas' animation (defaults to `false` (no animation))
 
@@ -168,19 +169,19 @@ Settings for the atlas' animation (defaults to `false` (no animation))
   Number of frames for the animation or array of frames as a pattern.<br>
   E.g. `10` = `[0,1,2,3,4,5,6,7,8,9]`
 
-- `frameStep: number;`
+- `frameStep: number`
 
   Number of pixels the UV moves across the source image
 
-- `frameDuration?: number;`
+- `frameDuration?: number`
 
   Seconds per frame - cannot be active at the same time as `fps`
 
-- `fps?: number;`
+- `fps?: number`
 
   Frames per second - cannot be active at the same times as `frameDuration`
 
-- `mode?: 'loop' | 'keep-on-last' | 'destroy-after-last';`
+- `mode?: 'loop' | 'keep-on-last' | 'destroy-after-last'`
 
   How the animation behaves (defaults to `loop`)
 
@@ -188,23 +189,23 @@ Settings for the atlas' animation (defaults to `false` (no animation))
   - `keep-on-last` - once the last frame is reached, it will stay on that frame
   - `destroy-after-last` - removes element when animation is complete
 
-- `orientation?: 'horizontal' | 'vertical';`
+- `orientation?: 'horizontal' | 'vertical'`
 
   X/Y direction the UV moves in `frameStep`s for each frame
 
-- `onStart?: () => void;`
+- `onStart?: () => void`
 
   Function to run on first frame
 
-- `onEnd?: () => void;`
+- `onEnd?: () => void`
 
   Function to run on last frame
 
-- `onFrameChanged?: () => void;`
+- `onFrameChanged?: () => void`
 
   Function to run every frame change
 
-- `onFrame?: { ... };`
+- `onFrame?: { ... }`
 
   Function to run on a specific frame
 
