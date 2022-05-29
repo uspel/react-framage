@@ -13,7 +13,8 @@ Display specific portions of an image, and animate between sprites.
 ## Features
 
 - Supports custom frame patterns/orders for animations
-- 3 animation modes ("loop", "keep-on-last", "destroy-after-last")
+- 3 animation modes (`loop`, `keep-on-last`, `destroy-after-last`)
+- Animation events (`onStart`, `onEnd`, `onFrameChanged`, `onFrame`)
 - No dependencies
 
 ## Installation
@@ -81,7 +82,7 @@ function Demo({ src }) {
 
 **`src: string | string[]`**
 
-URL source of the image.
+URL source of the image - can be an array of sources creating tiled atlases with the same settings.
 
 ---
 
@@ -180,7 +181,7 @@ Settings for the atlas' animation (defaults to `false` (no animation))
 
 - `mode?: 'loop' | 'keep-on-last' | 'destroy-after-last';`
 
-  How the animation behaves:
+  How the animation behaves (defaults to `loop`)
 
   - `loop` - repeats frames infinitely
   - `keep-on-last` - once the last frame is reached, it will stay on that frame
