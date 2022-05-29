@@ -83,29 +83,43 @@ function Demo({ src }) {
 
 URL source of the image.
 
+---
+
 **`alt?: string;`**
 
 Alternate text for image (defaults to `""`)
+
+---
 
 **`rendering?: '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'unset' | '-moz-crisp-edges' | '-webkit-optimize-contrast' | 'auto' | 'crisp-edges' | 'pixelated'`**
 
 Image rendering (defaults to `auto`)
 
+---
+
 **`loading?: 'eager' | 'lazy'`**
 
 Image loading (defaults to `eager`)
+
+---
 
 **`draggable?: 'true' | 'false';`**
 
 Image draggability (defaults to `true`)
 
+---
+
 **`width: number;`**
 
 Pixel width of the atlas' output (output size ratio should be the same as UV size ratio)
 
+---
+
 **`height: number;`**
 
 Pixel height of the atlas' output
+
+---
 
 **`uv: { ... };`**
 
@@ -127,6 +141,8 @@ X position of the UV (from the left) - (default to `0`)
 
 Y position of the UV (from the top) - (defaults to `0`)
 
+---
+
 **`base: { ... };`**
 
 Dimensions of the source image
@@ -139,14 +155,16 @@ Pixel width of the source
 
 Pixel height of the source
 
+---
+
 **`animation?: { ... } | false;`**
 
 Settings for the atlas' animation (defaults to `false` (no animation))
 
 - `frames: number | number[]`
 
-  Number of frames for the animation or array of frames as a pattern.
-  e.g. `10` = `[0,1,2,3,4,5,6,7,8,9]`
+  Number of frames for the animation or array of frames as a pattern.<br>
+  E.g. `10` = `[0,1,2,3,4,5,6,7,8,9]`
 
 - `frameStep: number;`
 
