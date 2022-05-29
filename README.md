@@ -9,6 +9,7 @@ Display specific portions of an image, and animate between sprites.
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Props](#props)
 
 ## Features
 
@@ -23,7 +24,7 @@ Display specific portions of an image, and animate between sprites.
 npm i react-texture-atlas
 ```
 
-This library has been tested on: Chrome, Edge, Firefox.
+This library should function on major browsers such as Chrome, Edge and Firefox, but has not been tested on Internet Explorer.
 
 ## Usage
 
