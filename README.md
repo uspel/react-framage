@@ -17,8 +17,8 @@ Display specific portions of an image, and animate between sprites.
 ## Features
 
 - Supports custom frame patterns/orders for animations
-- 3 animation modes (`loop`, `keep-on-last`, `destroy-after-last`)
-- Animation events (`onStart`, `onEnd`, `onFrameChanged`)
+- 3 animation modes (`"loop"`, `"keep-on-last"`, `"destroy-after-last"`)
+- Animation events (`onStart`, `onEnd`, `onDestroy`, `onChange`)
 - No dependencies
 
 ## Installation
@@ -32,15 +32,15 @@ This library functions on major browsers such as Chrome, Edge, Firefox and Opera
 ## Usage
 
 ```tsx
-import TextureAtlas from 'react-texture-atlas';
+import TextureAtlas from "react-texture-atlas";
 ```
 
-This component contains an `img` element. Do not style this element (size etc.) as it may stop the component from functioning.
+This component contains an `<img>` element. Do not style this element (size etc.) as it may stop the component from functioning.
 
 ## Example
 
 ```tsx
-import TextureAtlas from 'react-texture-atlas';
+import TextureAtlas from "react-texture-atlas";
 
 export function Demo({ src }) {
   return (
@@ -57,11 +57,11 @@ export function Demo({ src }) {
         height: 16,
         // Place UV 10px from the left and 5px from the top of the source image.
         originX: 10,
-        originY: 5,
+        originY: 5
       }}
       base={{
         width: 120,
-        height: 16,
+        height: 16
       }}
       animation={{
         frames: 10,
@@ -69,10 +69,10 @@ export function Demo({ src }) {
         frameStep: 12,
         // 'frameDuration' may be used instead of 'fps'.
         fps: 30,
-        mode: 'loop',
-        orientation: 'horizontal',
+        mode: "loop",
+        orientation: "horizontal",
         // Display the frame on every frame change
-        onChange: f => console.log(`Yay! Frame ${f} has arrived.`),
+        onChange: f => console.log(`Yay! Frame ${f} has arrived.`)
       }}
     />
   );
@@ -111,6 +111,6 @@ An `object` containing animation settings.
 | onStart              | `() => void`                                       |               | Function to run on first frame.                                                                                                                                                                                                     |
 | onEnd                | `() => void`                                       |               | Function to run on last frame.                                                                                                                                                                                                      |
 | onDestroy            | `() => void`                                       |               | Function to run when atlas is destroyed by the `"destroy-after-last"` mode.                                                                                                                                                         |
-| onChange             | `(frame: number) => void`                          |               | Function to run every frame change. <hr> _@param_ `frame: number` - Current frame of the atlas                                                                                                                                      |
-| _~~onFrameChanged~~_ | `(frame: number) => void`                          |               | Function to run every frame change. <hr> _@deprecated_ - Use `onChange` instead. <br> _@param_ `frame: number` - Current frame of the atlas                                                                                         |
+| onChange             | `(frame: number) => void`                          |               | Function to run every frame change. <hr> _@param_ `frame: number` - Current frame of the atlas.                                                                                                                                     |
+| _~~onFrameChanged~~_ | `(frame: number) => void`                          |               | Function to run every frame change. <hr> _@deprecated_ - Use `onChange` instead. <br> _@param_ `frame: number` - Current frame of the atlas.                                                                                        |
 | _~~onFrame~~_        | `object`                                           |               | Function to run on a specific frame. <hr> _@deprecated_ - Functionality replaced by `onChange`. <br> _@param_ `frame: number` - Frame function runs on. <br> _@param_ `action: () => void` - Function to run.                       |
