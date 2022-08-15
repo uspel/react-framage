@@ -1,19 +1,19 @@
-import React from 'react';
-import useTextureAtlas from './hooks/textureAtlas';
-import Img from './components/img';
-import { TextureAtlasProps } from './types';
+import React from "react";
+import useTextureAtlas from "./hooks/textureAtlas";
+import Img from "./components/img";
+import { TextureAtlasProps } from "./types";
 
 export default function TextureAtlas({
-  src = '',
-  alt = '',
-  rendering = 'auto',
-  loading = 'eager',
-  draggable = 'true',
+  src = "",
+  alt = "",
+  rendering = "auto",
+  loading = "eager",
+  draggable = "true",
   width,
   height,
   uv = { width: 0, height: 0, originX: 0, originY: 0 },
   base = { width: 0, height: 0 },
-  animation = false,
+  animation = false
 }: TextureAtlasProps): JSX.Element {
   // Handles frame changing and image x, y positions
   const [frame, l, t, isDestroyed] = useTextureAtlas(
@@ -34,7 +34,7 @@ export default function TextureAtlas({
     width,
     height,
     base,
-    uv,
+    uv
   };
 
   return !isDestroyed && !(src instanceof Array) ? (

@@ -32,7 +32,8 @@
     "lint": "tsdx lint",
     "prepare": "tsdx build",
     "size": "size-limit",
-    "analyze": "size-limit --why"
+    "analyze": "size-limit --why",
+    "publish": "npm run build && git add . && git commit -m updates && git push -u origin main && npm publish"
   },
   "peerDependencies": {
     "react": ">=16"
