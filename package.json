@@ -1,16 +1,16 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "name": "react-texture-atlas",
   "description": "Display specific portions of an image, and animate between sprites.",
   "keywords": [
-    "react",
-    "reactjs",
-    "image",
-    "texture",
-    "spritesheet",
-    "atlas",
     "animation",
-    "react-component"
+    "atlas",
+    "image",
+    "react",
+    "react-component",
+    "reactjs",
+    "spritesheet",
+    "texture"
   ],
   "author": "QuazChick",
   "license": "MIT",
@@ -45,8 +45,8 @@
   "prettier": {
     "printWidth": 80,
     "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
+    "singleQuote": false,
+    "trailingComma": "none"
   },
   "module": "dist/react-texture-atlas.esm.js",
   "size-limit": [

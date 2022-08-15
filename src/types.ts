@@ -15,12 +15,12 @@ export type TextureAtlasProps = {
    Image loading.
    @default "eager"
   */
-  loading?: 'eager' | 'lazy';
+  loading?: "eager" | "lazy";
   /**
    Image draggability.
    @default "true"
   */
-  draggable?: 'true' | 'false';
+  draggable?: "true" | "false";
   /** Pixel width of the atlas' output (output size ratio should be the same as UV size ratio). */
   width: number;
   /** Pixel height of the atlas' output (output size ratio should be the same as UV size ratio). */
@@ -59,8 +59,8 @@ export type TextureAtlasImg = {
   height: number;
   src: string;
   alt: string;
-  loading: 'eager' | 'lazy';
-  draggable: 'true' | 'false';
+  loading: "eager" | "lazy";
+  draggable: "true" | "false";
   base: { width: number; height: number };
   uv: { width: number; height: number };
   rendering: TextureAtlasRendering;
@@ -93,9 +93,9 @@ export type TextureAtlasAnimation =
         `"destroy-after-last"` - removes element when animation is complete.
         @default "loop"
        */
-      mode?: 'loop' | 'keep-on-last' | 'destroy-after-last';
+      mode?: "loop" | "keep-on-last" | "destroy-after-last";
       /** X/Y direction the UV moves in for each frame. */
-      orientation?: 'horizontal' | 'vertical';
+      orientation?: "horizontal" | "vertical";
       /** Function to run on first frame. */
       onStart?: () => void;
       /** Function to run on last frame. */
@@ -123,13 +123,13 @@ export type TextureAtlasAnimation =
     };
 
 export type TextureAtlasRendering =
-  | '-moz-initial'
-  | 'inherit'
-  | 'initial'
-  | 'revert'
-  | 'unset'
-  | '-moz-crisp-edges'
-  | '-webkit-optimize-contrast'
-  | 'auto'
-  | 'crisp-edges'
-  | 'pixelated';
+  | "-moz-initial"
+  | "inherit"
+  | "initial"
+  | "revert"
+  | "unset"
+  | "-moz-crisp-edges"
+  | "-webkit-optimize-contrast"
+  | "auto"
+  | "crisp-edges"
+  | "pixelated";
