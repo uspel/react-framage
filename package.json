@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.1.1",
   "name": "react-texture-atlas",
   "description": "Display specific portions of an image, and animate between sprites.",
   "keywords": [
@@ -33,7 +33,7 @@
     "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "publish": "npm run build && git add . && git commit -m updates && git push -u origin main && npm publish"
+    "publish": "git add . && git commit -m Updates && git push -u origin main && npm publish"
   },
   "peerDependencies": {
     "react": ">=16"
