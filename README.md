@@ -1,9 +1,11 @@
 # React Texture Atlas
 
+![Logo](https://react-texture-atlas.quazchick.com/logo-small.png)
+
 Display specific portions of an image, and animate between sprites.
 
-[Desktop Atlas Editor/Demo](https://react-texture-atlas.quazchick.com)
-[![Desktop Atlas Editor/Demo](https://assets.quazchick.com/react-texture-atlas/editor.png)](https://react-texture-atlas.quazchick.com)
+[Desktop Atlas and Animation Editor](https://react-texture-atlas.quazchick.com)
+[![Editor Preview Image](https://react-texture-atlas.quazchick.com/preview-1.1.0.png)](https://react-texture-atlas.quazchick.com)
 
 ## Contents
 
@@ -16,20 +18,20 @@ Display specific portions of an image, and animate between sprites.
 
 - Supports custom frame patterns/orders for animations
 - 3 animation modes (`loop`, `keep-on-last`, `destroy-after-last`)
-- Animation events (`onStart`, `onEnd`, `onFrameChanged`, `onFrame`)
+- Animation events (`onStart`, `onEnd`, `onFrameChanged`)
 - No dependencies
 
 ## Installation
 
-```
+```console
 npm i react-texture-atlas
 ```
 
-This library should function on major browsers such as Chrome, Edge and Firefox, but has not been tested on Internet Explorer.
+This library functions on major browsers such as Chrome, Edge, Firefox and Opera.
 
 ## Usage
 
-```js
+```tsx
 import TextureAtlas from 'react-texture-atlas';
 ```
 
@@ -40,7 +42,7 @@ This component contains an `img` element. Do not style this element (size etc.) 
 ```tsx
 import TextureAtlas from 'react-texture-atlas';
 
-function Demo({ src }) {
+export function Demo({ src }) {
   return (
     <TextureAtlas
       src={src}
@@ -53,8 +55,9 @@ function Demo({ src }) {
       uv={{
         width: 12,
         height: 16,
-        originX: 0,
-        originY: 0,
+        // Place UV 10px from the left and 5px from the top of the source image.
+        originX: 10,
+        originY: 5,
       }}
       base={{
         width: 120,
@@ -62,18 +65,14 @@ function Demo({ src }) {
       }}
       animation={{
         frames: 10,
+        // Move UV across 12px for each frame.
         frameStep: 12,
-        //  frameDuration | Only one of "fps" or "frameDuration" allowed
+        // 'frameDuration' may be used instead of 'fps'.
         fps: 30,
         mode: 'loop',
         orientation: 'horizontal',
-        onStart: () => handleFirstFrame(),
-        onEnd: () => handleLastFrame(),
-        onFrameChanged: () => handleFrameChanged(),
-        onFrame: {
-          frame: 5,
-          action: () => handleFrame5(),
-        },
+        // Display the frame on every frame change
+        onChange: f => console.log(`Yay! Frame ${f} has arrived.`),
       }}
     />
   );
@@ -82,137 +81,36 @@ function Demo({ src }) {
 
 ## Props
 
-**`src: string | string[]`**
-
-URL source of the image - can be an array of sources creating tiled atlases with the same settings.
-
----
-
-**`alt?: string`**
-
-Alternate text for image (defaults to `""`)
-
----
-
-**`rendering?: '-moz-initial' | 'inherit' | 'initial' | 'revert' | 'unset' | '-moz-crisp-edges' | '-webkit-optimize-contrast' | 'auto' | 'crisp-edges' | 'pixelated'`**
-
-Image rendering (defaults to `auto`)
+| Prop      | Type                                                                                 | Default Value | Description                                                                                                                                                                                                                                                                                                         |
+| --------- | ------------------------------------------------------------------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| src       | `string \| string[]`                                                                 |               | URL source of the image - can be an array of sources, creating multiple atlases with the same settings.                                                                                                                                                                                                             |
+| alt       | `string`                                                                             | `""`          | Alternate text for image.                                                                                                                                                                                                                                                                                           |
+| rendering | [`ImageRendering`](https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering) | `"auto"`      | CSS `image-rendering`.                                                                                                                                                                                                                                                                                              |
+| loading   | `"eager" \| "lazy"`                                                                  | `"eager"`     | Image Loading.                                                                                                                                                                                                                                                                                                      |
+| draggable | `"true" \| "false"`                                                                  | `"true"`      | Image Draggability.                                                                                                                                                                                                                                                                                                 |
+| width     | `number`                                                                             |               | Pixel width of the atlas' output (output size ratio should be the same as UV size ratio).                                                                                                                                                                                                                           |
+| height    | `number`                                                                             |               | Pixel height of the atlas' output (output size ratio should be the same as UV size ratio).                                                                                                                                                                                                                          |
+| uv        | `object`                                                                             |               | Portion of the source image visible. <hr> _@param_ `width: number` - Pixel width of the UV. <br> _@param_ `height: number` - Pixel height of the UV. <br> _@param_ `originX: number` - Initial X position of the UV (from the left). <br> _@param_ `originY: number` - Initial Y position of the UV (from the top). |
+| base      | `object`                                                                             |               | Dimensions of the source image. <hr> _@param_ `width: number` - Pixel width of the source. <br> _@param_ `height: number` - Pixel height of the source.                                                                                                                                                             |
+| animation | [`TextureAtlasAnimation \| false`](#textureatlasanimation)                           | `false`       | Settings for the atlas' animation - set to `false` for no animation.                                                                                                                                                                                                                                                |
 
 ---
 
-**`loading?: 'eager' | 'lazy'`**
+### TextureAtlasAnimation
 
-Image loading (defaults to `eager`)
+An `object` containing animation settings.
 
----
-
-**`draggable?: 'true' | 'false'`**
-
-Image draggability (defaults to `true`)
-
----
-
-**`width: number`**
-
-Pixel width of the atlas' output (output size ratio should be the same as UV size ratio)
-
----
-
-**`height: number`**
-
-Pixel height of the atlas' output
-
----
-
-**`uv: { ... }`**
-
-Portion of the source image visible:
-
-- `width: number`
-
-Pixel width of the UV
-
-- `height: number`
-
-Pixel height of the UV
-
-- `originX?: number`
-
-X position of the UV (from the left) - (default to `0`)
-
-- `originY?: number`
-
-Y position of the UV (from the top) - (defaults to `0`)
-
----
-
-**`base: { ... }`**
-
-Dimensions of the source image
-
-- `width: number`
-
-Pixel width of the source
-
-- `height: number`
-
-Pixel height of the source
-
----
-
-**`animation?: { ... } | false`**
-
-Settings for the atlas' animation (defaults to `false` (no animation))
-
-- `frames: number | number[]`
-
-  Number of frames for the animation or array of frames as a pattern.<br>
-  E.g. `10` = `[0,1,2,3,4,5,6,7,8,9]`
-
-- `frameStep: number`
-
-  Number of pixels the UV moves across the source image
-
-- `frameDuration?: number`
-
-  Seconds per frame - cannot be active at the same time as `fps`
-
-- `fps?: number`
-
-  Frames per second - cannot be active at the same times as `frameDuration`
-
-- `mode?: 'loop' | 'keep-on-last' | 'destroy-after-last'`
-
-  How the animation behaves (defaults to `loop`)
-
-  - `loop` - repeats frames infinitely
-  - `keep-on-last` - once the last frame is reached, it will stay on that frame
-  - `destroy-after-last` - removes element when animation is complete
-
-- `orientation?: 'horizontal' | 'vertical'`
-
-  X/Y direction the UV moves in `frameStep`s for each frame
-
-- `onStart?: () => void`
-
-  Function to run on first frame
-
-- `onEnd?: () => void`
-
-  Function to run on last frame
-
-- `onFrameChanged?: () => void`
-
-  Function to run every frame change
-
-- `onFrame?: { ... }`
-
-  Function to run on a specific frame
-
-  - `frame: number`
-
-  Frame function runs on
-
-  - `action: () => void`
-
-  Function to run
+| Param                | Type                                               | Default Value | Description                                                                                                                                                                                                                         |
+| -------------------- | -------------------------------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| frames               | `number \| number[]`                               |               | Number of frames for the animation or array of frames as a pattern. <br><br> A value of the number `3` would have the same result as an array of `[0, 1, 2]`.                                                                       |
+| frameStep            | `string`                                           |               | Number of pixels the UV moves across the source image.                                                                                                                                                                              |
+| frameDuration        | `number`                                           |               | Seconds per frame - cannot be active at the same times as `fps`.                                                                                                                                                                    |
+| fps                  | `number`                                           |               | Frames per second - cannot be active at the same times as `frameDuration`.                                                                                                                                                          |
+| mode                 | `"loop" \| "keep-on-last" \| "destroy-after-last"` | `"loop"`      | How the animation behaves. <hr> `"loop"` - repeats frames infinitely. <br> `"keep-on-last"` - once the last frame is reached, it will stay on that frame. <br> `"destroy-after-last"` - removes element when animation is complete. |
+| orientation          | `"horizontal" \| "vertical"`                       |               | X/Y direction the UV moves in for each frame.                                                                                                                                                                                       |
+| onStart              | `() => void`                                       |               | Function to run on first frame.                                                                                                                                                                                                     |
+| onEnd                | `() => void`                                       |               | Function to run on last frame.                                                                                                                                                                                                      |
+| onDestroy            | `() => void`                                       |               | Function to run when atlas is destroyed by the `"destroy-after-last"` mode.                                                                                                                                                         |
+| onChange             | `(frame: number) => void`                          |               | Function to run every frame change. <hr> _@param_ `frame: number` - Current frame of the atlas                                                                                                                                      |
+| _~~onFrameChanged~~_ | `(frame: number) => void`                          |               | Function to run every frame change. <hr> _@deprecated_ - Use `onChange` instead. <br> _@param_ `frame: number` - Current frame of the atlas                                                                                         |
+| _~~onFrame~~_        | `object`                                           |               | Function to run on a specific frame. <hr> _@deprecated_ - Functionality replaced by `onChange`. <br> _@param_ `frame: number` - Frame function runs on. <br> _@param_ `action: () => void` - Function to run.                       |
