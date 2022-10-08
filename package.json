@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
+  "version": "1.0.2",
   "name": "react-framage",
   "description": "Display specific portions of an image, and animate between frames.",
   "keywords": [

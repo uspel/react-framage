@@ -26,6 +26,8 @@ import { useFramage } from "../hooks";
     }
     react-framage img {
       position: absolute;
+      top: 0;
+      left: 0;
     }
   ```
  */
@@ -95,6 +97,8 @@ export const Framage = forwardRef(function Framage(
 }
 react-framage img {
   position: absolute;
+  top: 0;
+  left: 0;
 }`;
       styleElement.setAttribute("data-react-framage-style", "");
       document.head.prepend(styleElement);
