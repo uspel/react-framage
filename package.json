@@ -1,6 +1,6 @@
 {
-  "version": "1.1.2",
-  "name": "react-texture-atlas",
+  "version": "1.0.0",
+  "name": "react-framage",
   "description": "Display specific portions of an image, and animate between sprites.",
   "keywords": [
     "animation",
@@ -19,8 +19,7 @@
   "repository": "https://github.com/QuazChick/react-texture-atlas",
   "typings": "dist/index.d.ts",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "engines": {
     "node": ">=10"
@@ -33,7 +32,7 @@
     "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "publish": "git add . && git commit -m Updates && git push -u origin main && npm publish"
+    "publish": "git add . && git commit -m Updates && git push -u origin main"
   },
   "peerDependencies": {
     "react": ">=16"
@@ -64,6 +63,7 @@
     "@size-limit/preset-small-lib": "^7.0.8",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.5",
+    "@types/resize-observer-browser": "^0.1.7",
     "husky": "^8.0.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",

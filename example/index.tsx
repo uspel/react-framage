@@ -1,38 +1,56 @@
-import 'react-app-polyfill/ie11';
-import * as React from 'react';
-import { createRoot } from 'react-dom/client';
-import TextureAtlas from '.././';
+import "react-app-polyfill/ie11";
+import React, { useState } from "react";
+import { createRoot } from "react-dom/client";
+import Framage, { FramageElement } from ".././";
+import "./styles.scss";
 
 const App = () => {
+  const framage = React.useRef<FramageElement>(null);
+  const [clicked, setClicked] = React.useState<boolean | undefined>();
+  const [frame, setFrame] = useState(0);
   return (
-    <TextureAtlas
-      src="https://react-texture-atlas.quazchick.com/demo.png"
-      alt=""
-      loading="eager"
-      rendering="pixelated"
-      draggable="false"
-      width={600}
-      height={600}
-      base={{ width: 150, height: 15 }}
-      uv={{ width: 15, height: 15, originX: 0, originY: 0 }}
-      animation={{
-        frames: 10,
-        frameStep: 15,
-        fps: 1,
-        mode: 'destroy-after-last',
-        orientation: 'horizontal',
-        onStart: () => console.log('onStart'),
-        onEnd: () => console.log('onEnd'),
-        onDestroy: () => console.log('onDestroy'),
-        onChange: f => console.log('onChange: ' + f),
-        onFrameChanged: f => console.log('onFrameChanged: ' + f),
-        onFrame: {
-          frame: 1,
-          action: () => console.log('onFrame: 1'),
-        },
-      }}
-    />
+    <main>
+      <div>
+        <Framage
+          ref={framage}
+          src="https://react-texture-atlas.quazchick.com/demo.png"
+          alt=""
+          view={{ width: 15, height: 15 }}
+          animation={{
+            frames: clicked
+              ? [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            initial: clicked === undefined ? 9 : undefined,
+            step: 15,
+            fps: 1,
+            mode: "keep-on-last",
+            orientation: "horizontal",
+            onStart(e) {
+              console.log(`onStart:\n  frame ${e.frame}\n  steps ${e.steps}`);
+            },
+            onEnd(e) {
+              console.log(`onEnd:\n  frame ${e.frame}\n  steps ${e.steps}`);
+            },
+            onDestroy(e) {
+              console.log(`onDestroy:\n  frame ${e.frame}\n  steps ${e.steps}`);
+            },
+            onChange(e) {
+              console.log(`onChange:\n  frame ${e.frame}\n  steps ${e.steps}`);
+              e.frame === 1 && setFrame(e.frame);
+            }
+          }}
+        />
+      </div>
+
+      <button onClick={() => setClicked(c => (!c ? true : false))}>
+        Click {frame}
+      </button>
+    </main>
   );
 };
 
-createRoot(document.getElementById('root')!).render(<App />);
+createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
