@@ -1,29 +1,25 @@
 import "react-app-polyfill/ie11";
-import React, { useState } from "react";
+import React from "react";
 import { createRoot } from "react-dom/client";
-import Framage, { FramageElement } from ".././";
+import Framage from ".././";
 import "./styles.scss";
 
 const App = () => {
-  const framage = React.useRef<FramageElement>(null);
-  const [clicked, setClicked] = React.useState<boolean | undefined>();
-  const [frame, setFrame] = useState(0);
   return (
     <main>
       <div>
         <Framage
-          ref={framage}
-          src="https://react-texture-atlas.quazchick.com/demo.png"
+          src="https://github.com/Uspel/react-framage/blob/main/images/demo.png"
           alt=""
           view={{ width: 15, height: 15 }}
           animation={{
-            frames: clicked
-              ? [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
-              : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-            initial: clicked === undefined ? 9 : undefined,
+            frames: {
+              amount: 10,
+              pattern: f => [...f, ...[...f].reverse()]
+            },
             step: 15,
             fps: 1,
-            mode: "keep-on-last",
+            mode: "loop",
             orientation: "horizontal",
             onStart(e) {
               console.log(`onStart:\n  frame ${e.frame}\n  steps ${e.steps}`);
@@ -36,15 +32,10 @@ const App = () => {
             },
             onChange(e) {
               console.log(`onChange:\n  frame ${e.frame}\n  steps ${e.steps}`);
-              e.frame === 1 && setFrame(e.frame);
             }
           }}
         />
       </div>
-
-      <button onClick={() => setClicked(c => (!c ? true : false))}>
-        Click {frame}
-      </button>
     </main>
   );
 };

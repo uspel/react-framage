@@ -1,4 +1,11 @@
 /// <reference path="../types.ts"/>
+
+/**
+  `<react-framage>` element created by `<Framage>` component.
+  
+  @version 1.0.0
+  @see https://npmjs.com/package/react-framage#framageelement
+ */
 export class FramageElement extends HTMLElement {
   readonly frame: number;
   readonly steps: number;

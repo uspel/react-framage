@@ -1,9 +1,9 @@
 /// <reference path="../types.ts"/>
 import { useEffect, useRef, useState } from "react";
-/** Hook used by `<Framage />`.
+/** A custom hook used by `<Framage>`.
 
   Returns an array containing the current frame index and a boolean representing whether or not the animation is destroyed.
-  @param animation Animation settings, the same options as the `<Framage />` prop.
+  @param animation Animation settings, the same options as the `<Framage>` prop.
   @param element `HTMLElement` to trigger events on. Prop event handlers do not require this.
   @version 1.0.0
   @see https://npmjs.com/package/react-framage#useframage
@@ -12,16 +12,26 @@ export function useFramage(
   animation: FramageAnimation,
   element?: HTMLElement
 ): [number, boolean] {
-  const [frame, setFrame] = useState((animation && animation.initial) ?? 0);
+  const [frame, setFrame] = useState(
+    (animation && animation.frames.initial) ?? 0
+  );
   const [isDestroyed, setIsDestroyed] = useState(false);
   const interval = useRef<NodeJS.Timer | undefined>();
 
-  // Final frame index
-  const finalFrame =
+  const frames = Array.from(
+    { length: animation && animation.frames.amount },
+    (_, i) => i
+  );
+  const pattern =
     animation &&
-    (animation.frames instanceof Array
-      ? animation.frames.length
-      : animation.frames) - 1;
+    (animation.frames.pattern
+      ? typeof animation.frames.pattern === "function"
+        ? animation.frames.pattern(frames)
+        : animation.frames.pattern
+      : frames);
+
+  // Final frame index
+  const finalFrame = pattern.length - 1;
 
   function triggerEvent(
     type: "start" | "end" | "destroy" | "change",
@@ -30,11 +40,7 @@ export function useFramage(
     // Event running
     const e = new Event("framageanimation" + type) as FramageEvent;
     // Amount of steps taken after frame change
-    const nextSteps =
-      animation &&
-      (animation.frames instanceof Array
-        ? animation.frames[nextFrame]
-        : nextFrame);
+    const nextSteps = pattern[nextFrame];
     e.frame = nextFrame;
     e.steps = nextSteps;
     element?.dispatchEvent(e);
@@ -51,9 +57,6 @@ export function useFramage(
         : animation.mode === "keep-on-last" && frame === finalFrame
         ? finalFrame
         : frame + 1);
-    console.log(
-      "Final: " + finalFrame + "\nNext: " + nextFrame + "\nCurrent: " + frame
-    );
     if (animation && animation.fps !== 0) {
       // ---------------
       //   Destruction
@@ -124,7 +127,7 @@ export function useFramage(
     }
   }, [animation]);
   function setDefaults() {
-    setFrame((animation && animation.initial) ?? 0);
+    setFrame((animation && animation.frames.initial) ?? 0);
   }
   useEffect(() => {
     if (animation) {

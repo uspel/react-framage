@@ -5,24 +5,24 @@ declare global {
   interface FramageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     /**
      Portion of the source image visible.
-    @param width Pixel width of the UV.
-    @param height Pixel height of the UV.
-    @param originX Initial X position of the UV (from the left).
-    @param originY Initial Y position of the UV (from the top).
+    @param width Pixel width.
+    @param height Pixel height.
+    @param left Initial X position of the view portion (from the left).
+    @param top Initial Y position of the view prtion (from the top).
     */
     view: {
       width: number;
       height: number;
       /** @default 0 */
-      originX?: number;
+      left?: number;
       /** @default 0 */
-      originY?: number;
+      top?: number;
     };
     style?: React.CSSProperties & {
       img?: React.CSSProperties;
     };
     /**
-    Settings for the atlas' animation - set to `false` for no animation.
+    Settings for the component's animation - set to `false` for no animation.
     @default false (no animation)
     */
     animation?: FramageAnimation;
@@ -33,23 +33,27 @@ declare global {
     steps: number;
   };
   type FramageEventHandler = (e: FramageEvent) => void;
+  type FramageFramePattern = number[] | ((frames: number[]) => number[]);
   type FramageAnimation =
     | false
     | ({
         /**
-      Number of frames for the animation or array of frames as a pattern.
-     
-      A value of the number `3` would have the same result as an array of `[0,1,2]`.
+      Animation's frame configuration.
     */
-        frames: number | number[];
-        /** Initial frame index. */
-        initial?: number;
-        /** Number of pixels the UV moves across the source image. */
+        frames: {
+          /** Number of frames in total on source. */
+          amount: number;
+          /** Order to display frames in. */
+          pattern?: FramageFramePattern;
+          /** Frame to start on first mount. */
+          initial?: number;
+        };
+        /** Number of pixels until next frame (usually view width). */
         step: number;
         /**
-      How the animation behaves.
+      How the animation cycles.
 
-      `"loop"` - repeats frames infinitely.
+      `"loop"` - repeats animation infinitely.
 
       `"keep-on-last"` - once the last frame is reached, it will stay on that frame.
       
@@ -57,13 +61,13 @@ declare global {
       @default "loop"
      */
         mode?: "loop" | "keep-on-last" | "destroy-after-last";
-        /** X/Y direction the UV moves in for each frame. */
+        /** Direction the view portion moves in for each frame. */
         orientation?: "horizontal" | "vertical";
         /** Function to run on first frame. */
         onStart?: FramageEventHandler;
         /** Function to run on last frame. */
         onEnd?: FramageEventHandler;
-        /** Function to run when atlas is destroyed by the `"destroy-after-last"` mode. */
+        /** Function to run when animation is destroyed by the `"destroy-after-last"` mode. */
         onDestroy?: FramageEventHandler;
         /**
           Function to run every frame change.

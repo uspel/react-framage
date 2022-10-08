@@ -41,12 +41,21 @@ export const Framage = forwardRef(function Framage(
   const [frame, isDestroyed] = useFramage(animation, wrapper.current);
 
   const origins = {
-    x: view.originX ?? 0,
-    y: view.originY ?? 0
+    x: view.left ?? 0,
+    y: view.top ?? 0
   };
-  const steps =
+  const frames = Array.from(
+    { length: animation && animation.frames.amount },
+    (_, i) => i
+  );
+  const pattern =
     animation &&
-    (animation.frames instanceof Array ? animation.frames[frame] : frame);
+    (animation.frames.pattern
+      ? typeof animation.frames.pattern === "function"
+        ? animation.frames.pattern(frames)
+        : animation.frames.pattern
+      : frames);
+  const steps = pattern[frame];
 
   function getPosition(orientation: "vertical" | "horizontal") {
     const axis = orientation === "vertical" ? "y" : "x";
@@ -112,7 +121,7 @@ react-framage img {
   return !isDestroyed ? (
     <react-framage
       ref={wrapper}
-      frame={frame}
+      frame={!frame ? undefined : frame}
       steps={steps}
       style={{ img, ...style }}
     >

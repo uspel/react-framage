@@ -1,22 +1,19 @@
 {
   "version": "1.0.0",
   "name": "react-framage",
-  "description": "Display specific portions of an image, and animate between sprites.",
+  "description": "Display specific portions of an image, and animate between frames.",
   "keywords": [
     "animation",
-    "atlas",
     "image",
     "react",
     "react-component",
     "reactjs",
-    "spritesheet",
-    "texture"
+    "spritesheet"
   ],
-  "author": "QuazChick",
+  "author": "Uspel",
   "license": "MIT",
   "main": "dist/index.js",
-  "homepage": "https://react-texture-atlas.quazchick.com",
-  "repository": "https://github.com/QuazChick/react-texture-atlas",
+  "repository": "https://github.com/Uspel/react-framage",
   "typings": "dist/index.d.ts",
   "files": [
     "dist"
@@ -48,14 +45,14 @@
     "singleQuote": false,
     "trailingComma": "none"
   },
-  "module": "dist/react-texture-atlas.esm.js",
+  "module": "dist/react-framage.esm.js",
   "size-limit": [
     {
-      "path": "dist/react-texture-atlas.cjs.production.min.js",
+      "path": "dist/react-framage.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/react-texture-atlas.esm.js",
+      "path": "dist/react-framage.esm.js",
       "limit": "10 KB"
     }
   ],
