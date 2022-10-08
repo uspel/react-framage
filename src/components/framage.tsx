@@ -101,8 +101,10 @@ react-framage img {
     }
   }, []);
   useEffect(() => {
-    img.current.style.translate =
-      getPosition("horizontal") + " " + getPosition("vertical");
+    if (img.current) {
+      img.current.style.translate =
+        getPosition("horizontal") + " " + getPosition("vertical");
+    }
   }, [frame]);
 
   const resizeObserver = new ResizeObserver(() => {
