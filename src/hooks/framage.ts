@@ -130,11 +130,6 @@ export function useFramage(
     setFrame((animation && animation.frames.initial) ?? 0);
   }
   useEffect(() => {
-    if (animation) {
-      setDefaults();
-    }
-  }, [animation && animation.frames]);
-  useEffect(() => {
     // Trigger frame change
     if (animation && !isDestroyed) {
       interval.current = setInterval(

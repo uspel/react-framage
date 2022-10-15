@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2",
+  "version": "1.1.0",
   "name": "react-framage",
   "description": "Display specific portions of an image, and animate between frames.",
   "keywords": [
@@ -13,7 +13,7 @@
   "author": "Uspel",
   "license": "MIT",
   "main": "dist/index.js",
-  "repository": "https://github.com/Uspel/react-framage",
+  "repository": "https://github.com/uspel/react-framage",
   "typings": "dist/index.d.ts",
   "files": [
     "dist"
