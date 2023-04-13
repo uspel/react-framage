@@ -1,0 +1,16 @@
+react-framage {
+  height: 300px;
+  width: 300px;
+  transition: 0.5s;
+}
+react-framage:hover {
+  width: 400px;
+  height: 200px;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
