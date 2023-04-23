@@ -89,12 +89,15 @@ An `object` containing animation settings.
 
 - **`frames:`** `number | number[]` - Animation's frame configuration.
   - Set to an array of numbers to configure timeline of `step`s. Each item represents the amount of `step`s taken across the source image.
-  - Set to a number to move one step at a time for the specified amount of frames
+  - Set to a number to move one step at a time for the specified amount of frames.
+  - Restarts animation when updated.
+- **`initial?:`** `number` - Frame index to start animation at.
 - **`step:`** `number` - Number of pixels until next frame, relative to source image (usually same as view width/height).
 - **`orientation:`** `"horizontal" | "vertical"` - Direction the view portion moves in for each `step`.
 - **`fps:`** `number` - Amount of frames to cycle through per second (frames per second).
 - **`loop?:`** `boolean` - Whether animation should repeat.
 - **`destroy?:`** `boolean` - Whether component should remove itself when animation ends.
+- **`key?:`** `any` - Restarts animation when value is updated.
 - **`onStart?:`** `() => void` - Function to run on the first frame.
 - **`onEnd?:`** `() => void` - Function to run at the end of the last frame.
 - **`onChange?:`** `(frame: number) => void` - Function to run every frame change.
@@ -134,6 +137,6 @@ import { useFramage } from "react-framage";
 function Demo({ animation }) {
   const [frame, isDestroyed] = useFramage(animation);
 
-  return !isDestroyed ? <p>Current frame: {frame}</p> : <p>Animation go bye bye 😢</p>;
+  return <p>{!isDestroyed ? `Current frame index: ${frame}` : "Animation go bye bye 😢"}</p>;
 }
 ```

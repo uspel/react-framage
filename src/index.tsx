@@ -29,17 +29,32 @@ declare global {
 }
 
 interface FramageAnimation {
+  /** Animation's frame configuration.
+   * - Set to an array of numbers to configure timeline of steps. Each item represents the amount of `step`s taken across the source image.
+   * - Set to a number to move one `step` at a time for the specified amount of frames.
+   * - Restarts animation when updated. */
   frames: number | number[];
-  fps: number;
-  step: number;
-  orientation: "horizontal" | "vertical";
+  /** Frame index to start animation at. */
   initial?: number;
+  /** Number of pixels until next frame, relative to source image (usually same as view width/height). */
+  step: number;
+  /** Direction the view portion moves in for each `step`. */
+  orientation: "horizontal" | "vertical";
+  /** Amount of frames to cycle through per second (frames per second). */
+  fps: number;
+  /** Whether animation should repeat. */
   loop?: boolean;
+  /** Whether component should remove itself when animation ends. */
   destroy?: boolean;
+  /** Restarts animation when value is updated. */
+  key?: any;
   // Handlers
-  onChange?(frame: number): void;
+  /** Function to run on the first frame. */
   onStart?(): void;
+  /** Function to run at the end of the last frame. */
   onEnd?(): void;
+  /** Function to run every frame change. */
+  onChange?(frame: number): void;
 }
 
 type Framage = JSX.IntrinsicElements["img"] & {
@@ -57,7 +72,7 @@ type Framage = JSX.IntrinsicElements["img"] & {
   /**
     Framage animation configuration.
     
-    @version 2.0.0
+    @version 2.0.2
     @see https://npmjs.com/package/react-framage#framageanimation
    */
   animation?: FramageAnimation;
@@ -68,7 +83,7 @@ type Framage = JSX.IntrinsicElements["img"] & {
 
   Returns an array containing the current frame index and a boolean representing whether the Framage is destroyed.
   
-  @version 2.0.0
+  @version 2.0.2
   @see https://npmjs.com/package/react-framage#useframage
  */
 export function useFramage(animation?: FramageAnimation): [number, boolean] {
@@ -114,7 +129,7 @@ export function useFramage(animation?: FramageAnimation): [number, boolean] {
       };
     }
     return undefined;
-  }, [animation]);
+  }, [animation?.frames, animation?.key]);
 
   return [frame, isDestroyed];
 }
@@ -122,7 +137,7 @@ export function useFramage(animation?: FramageAnimation): [number, boolean] {
 /** 
  Move between portions of an image to create flipbook-like animations!
 
- @version 2.0.0
+ @version 2.0.2
  @see https://npmjs.com/package/react-framage#usage
  */
 export function Framage({ view, animation, ...imgAttributes }: Framage) {

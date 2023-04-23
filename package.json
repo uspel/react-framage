@@ -1,7 +1,7 @@
 {
   "name": "react-framage",
   "repository": "https://github.com/uspel/react-framage",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Move between portions of an image to create flipbook-like animations!",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
