@@ -96,7 +96,6 @@ An `object` containing animation settings.
 - **`frames:`** `number | number[]` - Animation's frame configuration.
   - Set to an array of numbers to configure timeline of `step`s. Each item represents the amount of `step`s taken across the source image.
   - Set to a number to move one step at a time for the specified amount of frames.
-  - Restarts animation when updated.
 - **`initial?:`** `number` - Frame index to start animation at.
 - **`step:`** `number` - Number of pixels until next frame, relative to source image (usually same as view width/height).
 - **`orientation:`** `"horizontal" | "vertical"` - Direction the view portion moves in for each `step`.
