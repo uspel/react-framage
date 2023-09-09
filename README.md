@@ -1,8 +1,8 @@
 # React Framage
 
-![React Framage Logo](https://github.com/Uspel/react-framage/blob/main/logo.png)
+![React Framage Logo](https://github.com/uspel/react-framage/blob/main/logo.png)
 
-Move between portions of an image to create flipbook-like animations!
+Display portions of an image, flipbook animate between them and apply nineslice scaling!
 
 ## Contents
 
@@ -16,6 +16,7 @@ Move between portions of an image to create flipbook-like animations!
 ## Features
 
 - Responsive
+- Supports 9-slice scaling
 - Supports custom frame patterns/orders for animations
 - Toggle looping animations
 - Toggle the removal of Framage when its animation ends
@@ -74,11 +75,16 @@ react-framage img {
 
 The `<Framage>` component supports all `<img>` props (e.g. `src`, `alt`, `srcset`) as well as:
 
-- **`view?:`** `object` - Visible portion of source image.
-  - **`width?:`** `number` - Width of portion in pixels, relative to source.
-  - **`height?:`** `number` - Height of portion in pixels, relative to source.
+- **`view:`** `object` - Visible portion of source image.
+  - **`width:`** `number` - Width of portion in pixels, relative to source.
+  - **`height:`** `number` - Height of portion in pixels, relative to source.
   - **`left?:`** `number` - Offset of portion from the left in pixels, relative to source.
   - **`top?:`** `number` - Offset of portion from the top in pixels, relative to source.
+- **`nineslice?:`** `number | object` - Enable 9-slice scaling for this Framage. Configures the width of the border area with limited scaling.
+  - **`top?:`** `number` - Width of top border in pixels, relative to source.
+  - **`right?:`** `number` - Width of right border in pixels, relative to source.
+  - **`bottom?:`** `number` - Width of bottom border in pixels, relative to source.
+  - **`left?:`** `number` - Width of left border in pixels, relative to source.
 - **`animation?:`** [`FramageAnimation`](#framageanimation) - Framage animation configuration - if `undefined`, no animation is applied.
 
 ---
@@ -114,6 +120,18 @@ react-framage {
   width: var(--framage-view-width);
   height: var(--framage-view-height);
 }
+
+react-framage[ninesliced] {
+  display: inline-grid;
+}
+
+react-framage-slice {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
 react-framage img {
   position: absolute;
   left: 0;
@@ -122,6 +140,17 @@ react-framage img {
 ```
 
 The custom properties `--framage-view-width` and `--framage-view-height` are automatically set on the `<Framage>` component, representing the values passed through props.
+
+### Nineslice Styling
+
+The displayed width of the nineslice border can be controlled through the `--nineslice-border-width` and `--nineslice-border-*-width` properties.
+
+```css
+react-framage {
+  --nineslice-border-width: 30px;
+  --nineslice-border-top-width: 40px;
+}
+```
 
 ## useFramage
 

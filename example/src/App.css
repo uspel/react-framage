@@ -1,16 +1,19 @@
 react-framage {
   height: 300px;
   width: 300px;
-  transition: 0.5s;
-}
-react-framage:hover {
-  width: 400px;
-  height: 200px;
+  transition: 0.5s linear;
 }
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+react-framage:nth-of-type(1),
+react-framage:nth-of-type(2) {
+  display: grid;
+  --nineslice-border-left-width: 24px;
+  --nineslice-border-right-width: 24px;
+  --nineslice-border-top-width: 69px;
+  --nineslice-border-bottom-width: 24px;
+}
+
+react-framage:hover {
+  width: 100vw;
+  height: 100vh;
 }

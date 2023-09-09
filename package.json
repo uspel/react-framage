@@ -1,8 +1,8 @@
 {
   "name": "react-framage",
   "repository": "https://github.com/uspel/react-framage",
-  "version": "2.0.2",
-  "description": "Move between portions of an image to create flipbook-like animations!",
+  "version": "2.1.0",
+  "description": "Display portions of an image, flipbook animate between them and apply nineslice scaling!",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
@@ -15,10 +15,13 @@
     "watch": "rollup -c -w"
   },
   "keywords": [
-    "framage",
-    "react",
     "animation",
-    "component"
+    "component",
+    "framage",
+    "nineslice",
+    "9-slice",
+    "react",
+    "scaling"
   ],
   "author": "Uspel",
   "license": "MIT",

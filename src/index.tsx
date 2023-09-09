@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 if (!document.querySelector("style[data-framage-style]")) {
   const style = document.createElement("style");
@@ -9,12 +9,23 @@ if (!document.querySelector("style[data-framage-style]")) {
   width: var(--framage-view-width);
   height: var(--framage-view-height);
 }
+
+react-framage[ninesliced] {
+  display: inline-grid;
+}
+
+react-framage-slice {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
 react-framage img {
   position: absolute;
   left: 0;
   top: 0;
-}
-`;
+}`;
   style.setAttribute("data-framage-style", "");
   document.head.prepend(style);
 }
@@ -23,12 +34,26 @@ declare global {
   namespace JSX {
     interface IntrinsicElements {
       /** Wrapper element for the `<Framage>` component. */
-      "react-framage": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { frame: number; steps: number };
+      "react-framage": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & { frame: number; steps: number; ninesliced?: "" };
+      "react-framage-slice": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
     }
   }
 }
 
-interface FramageAnimation {
+export type FramageNineslice =
+  | number
+  | {
+      /** Width of top border in pixels, relative to source. */
+      top?: number;
+      /** Width of left border in pixels, relative to source. */
+      left?: number;
+      /** Width of bottom border in pixels, relative to source. */
+      bottom?: number;
+      /** Width of right border in pixels, relative to source. */
+      right?: number;
+    };
+
+export interface FramageAnimation {
   /** Animation's frame configuration.
    * - Set to an array of numbers to configure timeline of steps. Each item represents the amount of `step`s taken across the source image.
    * - Set to a number to move one `step` at a time for the specified amount of frames.
@@ -57,33 +82,43 @@ interface FramageAnimation {
   onChange?(frame: number): void;
 }
 
-type Framage = JSX.IntrinsicElements["img"] & {
+export type FramageView = {
+  /** Width of portion in pixels, relative to source. */
+  width: number;
+  /** Height of portion in pixels, relative to source. */
+  height: number;
+  /** Offset of portion from the left in pixels, relative to source. */
+  left?: number;
+  /** Offset of portion from the top in pixels, relative to source. */
+  top?: number;
+};
+
+export type FramageProps = JSX.IntrinsicElements["img"] & {
   /** Visible portion of source image. */
-  view?: {
-    /** Width of portion in pixels, relative to source. */
-    width?: number;
-    /** Height of portion in pixels, relative to source. */
-    height?: number;
-    /** Offset of portion from the left in pixels, relative to source. */
-    left?: number;
-    /** Offset of portion from the top in pixels, relative to source. */
-    top?: number;
-  };
+  view: FramageView;
+  /** Enable 9-slice scaling for this Framage. Configures the width of the border area with limited scaling. */
+  nineslice?: FramageNineslice;
   /**
     Framage animation configuration.
     
-    @version 2.0.2
+    @version 2.1.0
     @see https://npmjs.com/package/react-framage#framageanimation
    */
   animation?: FramageAnimation;
 };
+
+export type RegularFramageProps = Omit<FramageProps, "nineslice">;
+
+export interface NineslicedFramageProps extends FramageProps {
+  nineslice: FramageNineslice;
+}
 
 /**
   A custom hook used by `<Framage>`.
 
   Returns an array containing the current frame index and a boolean representing whether the Framage is destroyed.
   
-  @version 2.0.2
+  @version 2.1.0
   @see https://npmjs.com/package/react-framage#useframage
  */
 export function useFramage(animation?: FramageAnimation): [number, boolean] {
@@ -124,9 +159,7 @@ export function useFramage(animation?: FramageAnimation): [number, boolean] {
       handlers.onStart && handlers.onStart();
       const interval = setInterval(toNextFrame, 1000 / fps);
       intervalRef.current = interval;
-      return () => {
-        clearInterval(interval);
-      };
+      return () => clearInterval(interval);
     }
     return undefined;
   }, [animation?.frames, animation?.key]);
@@ -137,28 +170,45 @@ export function useFramage(animation?: FramageAnimation): [number, boolean] {
 /** 
  Move between portions of an image to create flipbook-like animations!
 
- @version 2.0.2
+ @version 2.1.0
  @see https://npmjs.com/package/react-framage#usage
  */
-export function Framage({ view, animation, ...imgAttributes }: Framage) {
+export function Framage({ nineslice, ...rest }: FramageProps) {
+  return nineslice === undefined ? <RegularFramage {...rest} /> : <NineslicedFramage nineslice={nineslice} {...rest} />;
+}
+
+function RegularFramage({ view, animation, ...imgAttributes }: RegularFramageProps) {
   const img = useRef<HTMLImageElement>(null);
   const wrapper = useRef<HTMLElement>(null);
 
   const [frame, isDestroyed] = useFramage(animation);
 
-  const frames = animation ? (typeof animation.frames === "number" ? Array.from({ length: animation.frames }, (_, i) => i) : animation.frames) : [0];
+  const steps = animation ? (typeof animation.frames === "number" ? frame : animation.frames[frame]) : 0;
 
-  const steps = frames[frame];
+  // --------------------
+  //   Handle Position
+  // --------------------
 
   function getImagePosition(inset: "top" | "left") {
     const isAnimationOrientation = animation && animation.orientation === (inset === "left" ? "horizontal" : "vertical");
     const stepSize = isAnimationOrientation ? animation.step * steps : 0;
 
-    return ((stepSize + (view?.[inset] ?? 0)) / (img.current?.[inset === "left" ? "naturalWidth" : "naturalHeight"] || 0)) * -100 + "%";
+    return ((stepSize + (view[inset] ?? 0)) / (img.current?.[inset === "left" ? "naturalWidth" : "naturalHeight"] || 0)) * -100 + "%";
   }
 
+  function setImagePosition() {
+    if (!img.current) return;
+    img.current.style.transform = `translate(${getImagePosition("left")}, ${getImagePosition("top")})`;
+  }
+
+  useEffect(setImagePosition, [frame]);
+
+  // --------------------
+  //    Handle Resize
+  // --------------------
+
   function getImageSize(dimension: "width" | "height") {
-    const viewSize = view?.[dimension];
+    const viewSize = view[dimension];
     return wrapper.current && img.current && viewSize
       ? (wrapper.current[dimension === "width" ? "clientWidth" : "clientHeight"] / viewSize) *
           img.current[dimension === "width" ? "naturalWidth" : "naturalHeight"] +
@@ -166,32 +216,25 @@ export function Framage({ view, animation, ...imgAttributes }: Framage) {
       : "0";
   }
 
-  useEffect(() => {
-    if (img.current) {
-      img.current.style.transform = `translate(${getImagePosition("left")}, ${getImagePosition("top")})`;
-    }
-  }, [frame]);
-
   const setImageSize = () => {
-    if (img.current) {
-      img.current.style.width = getImageSize("width");
-      img.current.style.height = getImageSize("height");
-    }
+    if (!img.current) return;
+    img.current.style.width = getImageSize("width");
+    img.current.style.height = getImageSize("height");
   };
-
   const resizeObserver = new ResizeObserver(setImageSize);
 
   useEffect(() => {
     if (wrapper.current) {
-      wrapper.current.style.setProperty("--framage-view-width", (view?.width ?? 0) + "px");
-      wrapper.current.style.setProperty("--framage-view-height", (view?.height ?? 0) + "px");
+      wrapper.current.style.setProperty("--framage-view-width", view.width + "px");
+      wrapper.current.style.setProperty("--framage-view-height", view.height + "px");
       resizeObserver.observe(wrapper.current);
     }
-    return () => {
-      resizeObserver.disconnect();
-    };
+    return () => resizeObserver.disconnect();
   }, [view, isDestroyed]);
 
+  // --------------------
+  //   Render Framage
+  // --------------------
   return !isDestroyed ? (
     <react-framage steps={steps} frame={frame} ref={wrapper}>
       <img
@@ -199,9 +242,172 @@ export function Framage({ view, animation, ...imgAttributes }: Framage) {
         ref={img}
         onLoad={(e) => {
           setImageSize();
+          setImagePosition();
           imgAttributes.onLoad && imgAttributes.onLoad(e);
         }}
       />
     </react-framage>
   ) : null;
+}
+
+const NineslicedFramageContext = createContext<{ frame: number; steps: number; animation?: FramageAnimation }>({ frame: 0, steps: 0 });
+
+function NineslicedFramage({ view, animation, nineslice: ninesliceProp, ...imgAttributes }: NineslicedFramageProps) {
+  const nineslice: Record<"top" | "right" | "bottom" | "left", number> =
+    typeof ninesliceProp === "number"
+      ? {
+          top: ninesliceProp,
+          right: ninesliceProp,
+          bottom: ninesliceProp,
+          left: ninesliceProp,
+        }
+      : {
+          top: ninesliceProp!.top ?? 0,
+          left: ninesliceProp!.left ?? 0,
+          bottom: ninesliceProp!.bottom ?? 0,
+          right: ninesliceProp!.right ?? 0,
+        };
+
+  const wrapper = useRef<HTMLElement>(null);
+
+  const [frame, isDestroyed] = useFramage(animation);
+
+  const steps = animation ? (typeof animation.frames === "number" ? frame : animation.frames[frame]) : 0;
+
+  const borderWidth = (side: keyof typeof nineslice) => `var(--nineslice-border-${side}-width, var(--nineslice-border-width, ${nineslice[side]}px))`;
+
+  useEffect(() => {
+    if (!wrapper.current) return;
+    wrapper.current.style.setProperty("--framage-view-width", view.width + "px");
+    wrapper.current.style.setProperty("--framage-view-height", view.height + "px");
+    wrapper.current.style.gridTemplate = `${borderWidth("top")} 1fr ${borderWidth("bottom")} / ${borderWidth("left")} 1fr ${borderWidth("right")}`;
+  }, [view, isDestroyed]);
+
+  // --------------------
+  //    Render Slices
+  // --------------------
+  const slices = {
+    "top-left": {
+      width: nineslice.left,
+      height: nineslice.top,
+    },
+    "top-middle": {
+      width: view.width - nineslice.left - nineslice.right,
+      height: nineslice.top,
+      left: (view.left ?? 0) + nineslice.left,
+    },
+    "top-right": {
+      width: nineslice.right,
+      height: nineslice.top,
+      left: view.width - nineslice.right,
+    },
+    "middle-left": {
+      width: nineslice.left,
+      height: view.height - nineslice.top - nineslice.bottom,
+      top: (view.top ?? 0) + nineslice.top,
+    },
+    middle: {
+      width: view.width - nineslice.left - nineslice.right,
+      height: view.height - nineslice.top - nineslice.bottom,
+      left: (view.left ?? 0) + nineslice.left,
+      top: (view.left ?? 0) + nineslice.top,
+    },
+    "middle-right": {
+      width: nineslice.right,
+      height: view.height - nineslice.top - nineslice.bottom,
+      left: (view.left ?? 0) + view.width - nineslice.right,
+      top: (view.top ?? 0) + nineslice.top,
+    },
+    "bottom-left": {
+      width: nineslice.left,
+      height: nineslice.bottom,
+      top: (view.top ?? 0) + view.height - nineslice.bottom,
+    },
+    "bottom-middle": {
+      width: view.width - nineslice.left - nineslice.right,
+      height: nineslice.bottom,
+      left: (view.left ?? 0) + nineslice.left,
+      top: (view.top ?? 0) + view.height - nineslice.bottom,
+    },
+    "bottom-right": {
+      width: nineslice.right,
+      height: nineslice.bottom,
+      left: view.width - nineslice.right,
+      top: (view.top ?? 0) + view.height - nineslice.bottom,
+    },
+  };
+
+  return !isDestroyed ? (
+    <NineslicedFramageContext.Provider value={{ frame, steps, animation }}>
+      <react-framage ninesliced="" steps={steps} frame={frame} ref={wrapper}>
+        {Object.entries(slices).map(([area, sliceView]) => (
+          <FramageSlice key={area} main={area === "middle"} view={{ ...view, ...sliceView }} {...imgAttributes} />
+        ))}
+      </react-framage>
+    </NineslicedFramageContext.Provider>
+  ) : null;
+}
+
+function FramageSlice({ view, main, ...imgAttributes }: FramageProps & { main?: boolean }) {
+  const img = useRef<HTMLImageElement>(null);
+  const wrapper = useRef<HTMLElement>(null);
+  const { frame, steps, animation } = useContext(NineslicedFramageContext);
+
+  // --------------------
+  //  Handle Reposition
+  // --------------------
+  function getImagePosition(inset: "top" | "left") {
+    const isAnimationOrientation = animation && animation.orientation === (inset === "left" ? "horizontal" : "vertical");
+    const stepSize = isAnimationOrientation ? animation.step * steps : 0;
+
+    return ((stepSize + (view[inset] ?? 0)) / (img.current?.[inset === "left" ? "naturalWidth" : "naturalHeight"] || 0)) * -100 + "%";
+  }
+
+  function setImagePosition() {
+    if (!img.current) return;
+    img.current.style.transform = `translate(${getImagePosition("left")}, ${getImagePosition("top")})`;
+  }
+
+  useEffect(setImagePosition, [frame]);
+
+  // --------------------
+  //    Handle Resize
+  // --------------------
+  function getImageSize(dimension: "width" | "height") {
+    const viewSize = view[dimension];
+    return wrapper.current && img.current && viewSize
+      ? (wrapper.current[dimension === "width" ? "clientWidth" : "clientHeight"] / viewSize) *
+          img.current[dimension === "width" ? "naturalWidth" : "naturalHeight"] +
+          "px"
+      : "0";
+  }
+
+  function setImageSize() {
+    if (!img.current) return;
+    img.current.style.width = getImageSize("width");
+    img.current.style.height = getImageSize("height");
+  }
+  const resizeObserver = new ResizeObserver(setImageSize);
+
+  useEffect(() => {
+    if (wrapper.current) resizeObserver.observe(wrapper.current);
+    return () => resizeObserver.disconnect();
+  }, [view]);
+
+  // --------------------
+  //    Render Slice
+  // --------------------
+  return (
+    <react-framage-slice aria-hidden={!main || undefined} ref={wrapper}>
+      <img
+        {...imgAttributes}
+        ref={img}
+        onLoad={(e) => {
+          setImageSize();
+          setImagePosition();
+          imgAttributes.onLoad && imgAttributes.onLoad(e);
+        }}
+      />
+    </react-framage-slice>
+  );
 }
