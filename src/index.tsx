@@ -167,7 +167,7 @@ export function useFramage(animation?: FramageAnimation): [number, boolean] {
 }
 
 /** 
- Move between portions of an image to create flipbook-like animations!
+ Display portions of an image, flipbook animate between them and apply nineslice scaling!
 
  @version 2.1.0
  @see https://npmjs.com/package/react-framage#usage
