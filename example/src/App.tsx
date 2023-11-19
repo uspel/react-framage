@@ -1,31 +1,40 @@
-import { Framage } from "../../";
 import "./App.css";
+
 import exampleImg from "./assets/example.png";
 import dialogueImg from "./assets/dialogue.png";
 import dialogueAnimImg from "./assets/dialogue_animated.png";
+
 import { useState } from "react";
+import Framage from "../../";
 
 function App() {
   const [frames, setFrames] = useState(Array.from({ length: 10 }, (_, i) => i));
   const [updater, setUpdater] = useState(0);
+
   return (
     <div className="App">
       <Framage
         src={dialogueImg}
         alt=""
-        view={{ width: 18, height: 33 }}
-        nineslice={{ bottom: 8, left: 8, right: 8, top: 23 }}
-        style={{ imageRendering: "pixelated" }}
+        view={{
+          width: 18,
+          height: 33,
+        }}
+        nineslice={{
+          bottom: 8,
+          left: 8,
+          right: 8,
+          top: 23,
+        }}
       />
       <Framage
         src={dialogueAnimImg}
         alt=""
         view={{ width: 18, height: 33 }}
         nineslice={{ bottom: 8, left: 8, right: 8, top: 23 }}
-        style={{ imageRendering: "pixelated" }}
         animation={{
           frames: [0, 0, 1, 2, 2, 2, 1, 0],
-          fps: 12,
+          fps: 30,
           loop: true,
           orientation: "horizontal",
           step: 18,
@@ -34,8 +43,7 @@ function App() {
       <Framage
         src={exampleImg}
         alt=""
-        style={{ imageRendering: "pixelated" }}
-        view={{ width: 9, height: 9 }}
+        view={{ width: 8, height: 8, top: 1, left: 1 }}
         animation={{
           key: frames,
           fps: 1,

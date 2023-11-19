@@ -1,25 +1,24 @@
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-import typescript from "@rollup/plugin-typescript";
-import { terser } from "rollup-plugin-terser";
+import typescript from "rollup-plugin-ts";
 import external from "rollup-plugin-peer-deps-external";
-import postcss from "rollup-plugin-postcss";
+import { terser } from "rollup-plugin-terser";
 
 import { main, module } from "./package.json";
 
 export default {
-  input: "src/index.tsx",
+  input: "src/index.ts",
   output: [
     {
       file: main,
       format: "cjs",
-      sourcemap: true,
       name: "react-lib",
+      exports: "named",
     },
     {
       file: module,
       format: "esm",
-      sourcemap: true,
+      exports: "named",
     },
   ],
   plugins: [
@@ -27,7 +26,6 @@ export default {
     resolve(),
     commonjs(),
     typescript(),
-    postcss(),
     terser({
       keep_fnames: true,
     }),

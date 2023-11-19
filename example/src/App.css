@@ -2,18 +2,23 @@ react-framage {
   height: 300px;
   width: 300px;
   transition: 0.5s linear;
+  image-rendering: pixelated;
 }
 
 react-framage:nth-of-type(1),
 react-framage:nth-of-type(2) {
   display: grid;
-  --nineslice-border-left-width: 24px;
-  --nineslice-border-right-width: 24px;
-  --nineslice-border-top-width: 69px;
-  --nineslice-border-bottom-width: 24px;
+  --nineslice: 24px;
+  --nineslice-top: 69px;
+  height: 500px;
+  width: 500px;
+  animation: size 2s infinite;
 }
 
-react-framage:hover {
-  width: 100vw;
-  height: 100vh;
+@keyframes size {
+  50% {
+    width: 1000px;
+    height: 200px;
+    margin-bottom: 300px;
+  }
 }
