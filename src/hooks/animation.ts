@@ -17,7 +17,7 @@ export default function useFramageAnimation(animation?: FramageAnimation): [numb
     // Values to use in functions where state is not updated
     frameCount = typeof frames === "number" ? frames : frames?.length ?? 1,
     frameRef = useRef(initial ?? 0),
-    intervalRef = useRef<NodeJS.Timeout>();
+    intervalRef = useRef<number>();
 
   // Keep current frame up-to-date
   frameRef.current = frame;

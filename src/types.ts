@@ -20,7 +20,6 @@ export interface FramageProps extends Omit<JSX.IntrinsicElements["img"], "ref"> 
   /**
     Visible portion of source image.
     
-    
     @version 3.0.0
     @see https://npmjs.com/package/react-framage#framagenineslice
   */
@@ -41,7 +40,7 @@ export interface FramageProps extends Omit<JSX.IntrinsicElements["img"], "ref"> 
   animation?: FramageAnimation;
 }
 
-export type FramageView = {
+export interface FramageView {
   /** Width of portion in pixels, relative to source. */
   width: number;
   /** Height of portion in pixels, relative to source. */
@@ -50,7 +49,7 @@ export type FramageView = {
   left?: number;
   /** Offset of portion from the top in pixels, relative to source. */
   top?: number;
-};
+}
 
 export type FramageNineslice =
   | number
@@ -68,7 +67,8 @@ export type FramageNineslice =
 export interface FramageAnimation {
   /** Animation's frame configuration.
    * - Set to an array of numbers to configure timeline of steps. Each item represents the amount of `step`s taken across the source image.
-   * - Set to a number to move one `step` at a time for the specified amount of frames. */
+   * - Set to a number to move one `step` at a time for the specified amount of frames.
+   */
   frames: number | number[];
   /** Frame index to start animation at. */
   initial?: number;
