@@ -27,7 +27,7 @@ export default function RegularFramage({ view, animation, ...imageProps }: Regul
   //   Render Framage
   // --------------------
   return !isDestroyed ? (
-    <react-framage ref={wrapper}>
+    <react-framage steps={animation ? steps : undefined} frame={animation ? frame : undefined} ref={wrapper}>
       <img ref={image} {...imageProps} />
     </react-framage>
   ) : null;

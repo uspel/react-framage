@@ -5,7 +5,11 @@ declare module "react" {
   namespace JSX {
     interface IntrinsicElements {
       /** Wrapper element for the `<Framage>` component. */
-      "react-framage": React.DetailedHTMLProps<React.HTMLAttributes<ReactFramageElement>, ReactFramageElement> & { ninesliced?: boolean };
+      "react-framage": React.DetailedHTMLProps<React.HTMLAttributes<ReactFramageElement>, ReactFramageElement> & {
+        ninesliced?: boolean;
+        frame?: number;
+        steps?: number;
+      };
       "react-framage-slice": React.DetailedHTMLProps<React.HTMLAttributes<ReactFramageSliceElement>, ReactFramageSliceElement>;
     }
   }

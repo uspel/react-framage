@@ -102,7 +102,7 @@ export default function NineslicedFramage({ view, animation, nineslice: nineslic
   };
 
   return !isDestroyed ? (
-    <react-framage ninesliced ref={wrapper}>
+    <react-framage ninesliced steps={animation ? steps : undefined} frame={animation ? frame : undefined} ref={wrapper}>
       <NineslicedFramageContext.Provider value={{ frame, steps, animation, imageProps }}>
         {Object.entries(slices).map(([area, sliceView]) => (
           <FramageSlice key={area} main={area === "middle"} view={{ ...view, ...sliceView }} />

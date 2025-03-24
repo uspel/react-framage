@@ -9,8 +9,10 @@ import { FramageAnimation } from "../types";
   @version 3.0.0
   @see https://npmjs.com/package/react-framage#useframageanimation
  */
-export default function useFramageAnimation(animation?: FramageAnimation): [number, number, boolean] {
-  const { frames, initial, loop, fps, destroy, ...handlers } = animation ?? ({} as FramageAnimation),
+export default function useFramageAnimation(
+  animation: FramageAnimation = { frames: 0, fps: 0, orientation: "horizontal", step: 0 },
+): [number, number, boolean] {
+  const { frames, initial, loop, fps, destroy, ...handlers } = animation ?? {},
     // Values to return
     [frame, setFrame] = useState(initial ?? 0),
     [isDestroyed, setIsDestroyed] = useState(false),
