@@ -1,6 +1,6 @@
-if (!document.querySelector("style[data-framage-style]")) {
+if (!document.querySelector("style[data-react-framage-style]")) {
   const style = document.createElement("style");
-  style.setAttribute("data-framage-style", "");
+  style.setAttribute("data-react-framage-style", "");
 
   style.innerHTML = `react-framage,
 react-framage-slice {
