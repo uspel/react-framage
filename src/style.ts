@@ -33,3 +33,5 @@ react-framage img {
 
   document.head.prepend(style);
 }
+
+export {};
