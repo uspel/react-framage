@@ -1,24 +1,10 @@
 react-framage {
-  height: 300px;
+  resize: both;
   width: 300px;
-  transition: 0.5s linear;
-  image-rendering: pixelated;
-}
-
-react-framage:nth-of-type(1),
-react-framage:nth-of-type(2) {
+  height: 300px;
   display: grid;
+  margin: auto;
+  image-rendering: pixelated;
   --nineslice: 24px;
   --nineslice-top: 69px;
-  height: 500px;
-  width: 500px;
-  animation: size 2s infinite;
-}
-
-@keyframes size {
-  50% {
-    width: 1000px;
-    height: 200px;
-    margin-bottom: 300px;
-  }
 }

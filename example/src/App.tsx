@@ -1,18 +1,14 @@
-import "./App.css";
-
 import exampleImg from "./assets/example.png";
 import dialogueImg from "./assets/dialogue.png";
 import dialogueAnimImg from "./assets/dialogue_animated.png";
 
 import { useState } from "react";
-import Framage from "../../";
+import Framage from "../..";
+import "./App.css";
 
-function App() {
-  const [frames, setFrames] = useState(Array.from({ length: 10 }, (_, i) => i));
-  const [updater, setUpdater] = useState(0);
-
+function App({ frames }: { frames: number[] }) {
   return (
-    <div className="App">
+    <>
       <Framage
         src={dialogueImg}
         alt=""
@@ -34,7 +30,7 @@ function App() {
         nineslice={{ bottom: 8, left: 8, right: 8, top: 23 }}
         animation={{
           frames: [0, 0, 1, 2, 2, 2, 1, 0],
-          fps: 30,
+          fps: 10,
           loop: true,
           orientation: "horizontal",
           step: 18,
@@ -57,6 +53,17 @@ function App() {
           onEnd: () => console.log("END"),
         }}
       />
+    </>
+  );
+}
+
+function Wrapper() {
+  const [frames, setFrames] = useState(Array.from({ length: 10 }, (_, i) => i));
+  const [updater, setUpdater] = useState(0);
+  return (
+    <div className="App">
+      <App frames={frames} />
+
       <button type="button" onClick={() => setFrames((f) => [...f.reverse()])}>
         Reverse
       </button>
@@ -67,4 +74,4 @@ function App() {
   );
 }
 
-export default App;
+export default Wrapper;
