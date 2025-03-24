@@ -9,6 +9,7 @@ import RegularFramage from "./regular";
  @version 3.0.0
  @see https://npmjs.com/package/react-framage
  */
-export default function Framage({ nineslice, ...rest }: FramageProps): JSX.Element {
+export default function Framage(props: FramageProps): JSX.Element | null;
+export default function Framage({ nineslice, ...rest }: FramageProps) {
   return nineslice === undefined ? <RegularFramage {...rest} /> : <NineslicedFramage nineslice={nineslice} {...rest} />;
 }
