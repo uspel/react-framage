@@ -19,21 +19,21 @@ export interface FramageProps extends Omit<JSX.IntrinsicElements["img"], "ref"> 
   /**
     Visible portion of source image.
     
-    @version 3.0.0
+    @version 4.0.0
     @see https://npmjs.com/package/react-framage#framagenineslice
   */
   view: FramageView;
   /**
     Enable 9-slice scaling for this Framage. Configures the width of the outer area with limited scaling.
     
-    @version 3.0.0
+    @version 4.0.0
     @see https://npmjs.com/package/react-framage#framagenineslice
   */
   nineslice?: FramageNineslice;
   /**
     Framage animation configuration.
     
-    @version 3.0.0
+    @version 4.0.0
     @see https://npmjs.com/package/react-framage#framageanimation
   */
   animation?: FramageAnimation;

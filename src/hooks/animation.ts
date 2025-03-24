@@ -6,7 +6,7 @@ import { FramageAnimation } from "../types";
 
   Returns an array containing the current frame index, amount of steps taken and a boolean representing whether the Framage is destroyed.
   
-  @version 3.0.0
+  @version 4.0.0
   @see https://npmjs.com/package/react-framage#useframageanimation
  */
 export default function useFramageAnimation(

@@ -6,7 +6,7 @@ import RegularFramage from "./regular";
 /** 
  Display portions of an image, flipbook animate between them and apply nineslice scaling!
 
- @version 3.0.0
+ @version 4.0.0
  @see https://npmjs.com/package/react-framage
  */
 export default function Framage(props: FramageProps): JSX.Element | null;

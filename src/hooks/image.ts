@@ -6,7 +6,7 @@ import { FramageAnimation, FramageView } from "../types";
 
   Controls the scaling and positioning on the `<img>` element.
   
-  @version 3.0.0
+  @version 4.0.0
   @see https://npmjs.com/package/react-framage#useframageimage
  */
 export default function useFramageImage(
