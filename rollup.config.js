@@ -21,7 +21,7 @@ export default defineConfig([
         declaration: true,
         declarationDir: ".temp/dts",
       }),
-      terser(),
+      terser({ keep_fnames: true }),
       copy(".temp/index.js", "dist/index.js"),
       copy(".temp/index.js.map", "dist/index.js.map"),
     ],
