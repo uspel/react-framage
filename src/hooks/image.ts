@@ -10,14 +10,14 @@ import { FramageAnimation, FramageView } from "../types";
   @see https://npmjs.com/package/react-framage#useframageimage
  */
 export default function useFramageImage(
-  wrapper: RefObject<HTMLElement>,
-  image: RefObject<HTMLImageElement>,
+  wrapper: RefObject<HTMLElement | null>,
+  image: RefObject<HTMLImageElement | null>,
   data: {
     animation?: FramageAnimation;
     frame: number;
     steps: number;
     view: FramageView;
-  }
+  },
 ) {
   // --------------------
   //  Handle Reposition

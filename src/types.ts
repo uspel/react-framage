@@ -1,17 +1,15 @@
 import { JSX } from "react";
 
-declare global {
-  namespace React {
-    namespace JSX {
-      interface IntrinsicElements {
-        /** Wrapper element for the `<Framage>` component. */
-        "react-framage": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
-          frame?: number;
-          steps?: number;
-          ninesliced?: "";
-        };
-        "react-framage-slice": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
-      }
+declare module "react" {
+  namespace JSX {
+    interface IntrinsicElements {
+      /** Wrapper element for the `<Framage>` component. */
+      "react-framage": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+        frame?: number;
+        steps?: number;
+        ninesliced?: "";
+      };
+      "react-framage-slice": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
     }
   }
 }

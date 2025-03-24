@@ -17,7 +17,7 @@ export default function useFramageAnimation(animation?: FramageAnimation): [numb
     // Values to use in functions where state is not updated
     frameCount = typeof frames === "number" ? frames : frames?.length ?? 1,
     frameRef = useRef(initial ?? 0),
-    intervalRef = useRef<number>();
+    intervalRef = useRef<number>(null);
 
   // Keep current frame up-to-date
   frameRef.current = frame;
@@ -30,7 +30,7 @@ export default function useFramageAnimation(animation?: FramageAnimation): [numb
     if (frameRef.current + 1 >= frameCount) handlers.onEnd?.();
 
     if (nextFrame >= frameCount) {
-      clearInterval(intervalRef.current);
+      if (intervalRef.current) clearInterval(intervalRef.current);
       if (destroy) return setIsDestroyed(true);
     }
 
