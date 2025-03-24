@@ -14,7 +14,7 @@ react-framage {
   height: var(--fallback-height);
 }
 
-react-framage[ninesliced] {
+react-framage:where([ninesliced]) {
   display: inline-grid;
   grid-template-rows: var(--nineslice-top, var(--nineslice, var(--fallback-nineslice-top))) 1fr var(--nineslice-bottom, var(--nineslice, var(--fallback-nineslice-bottom)));
   grid-template-columns: var(--nineslice-left, var(--nineslice, var(--fallback-nineslice-left))) 1fr var(--nineslice-right, var(--nineslice, var(--fallback-nineslice-right)));
