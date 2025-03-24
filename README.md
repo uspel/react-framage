@@ -32,7 +32,7 @@ Display portions of an image, flipbook animate between them and apply nineslice 
 npm i react-framage
 ```
 
-This library functions on all major browsers such as Chrome, Edge, Firefox and Opera.
+This library requires React 19 and functions on all major browsers such as Chrome, Edge, Firefox and Opera.
 
 ## Animation
 
