@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useRef, JSX } from "react";
+
 import { FramageAnimation, FramageProps, FramageNineslice } from "../types";
+import { ReactFramageElement, ReactFramageSliceElement } from "../elements";
 import { useFramageAnimation, useFramageImage } from "../hooks";
 
 export interface NineslicedFramageProps extends FramageProps {
@@ -11,16 +13,21 @@ const NineslicedFramageContext = createContext<{
   steps: number;
   animation?: FramageAnimation;
   imageProps: Omit<JSX.IntrinsicElements["img"], "ref">;
-}>({ frame: 0, steps: 0, imageProps: {} });
+}>({
+  frame: 0,
+  steps: 0,
+  imageProps: {},
+});
 
 function parseNinesliceProp(n: FramageNineslice) {
-  if (typeof n === "number")
+  if (typeof n === "number") {
     return {
       top: n,
       left: n,
       bottom: n,
       right: n,
     };
+  }
 
   return {
     top: n.top ?? 0,
@@ -31,17 +38,13 @@ function parseNinesliceProp(n: FramageNineslice) {
 }
 
 export default function NineslicedFramage({ view, animation, nineslice: ninesliceProp, ...imageProps }: NineslicedFramageProps) {
-  const wrapper = useRef<HTMLElement>(null);
+  const wrapper = useRef<ReactFramageElement>(null);
 
   const nineslice = parseNinesliceProp(ninesliceProp);
   const [frame, steps, isDestroyed] = useFramageAnimation(animation);
 
   useEffect(() => {
-    if (!wrapper.current) return;
-    wrapper.current.style.setProperty("--fallback-width", view.width + "px");
-    wrapper.current.style.setProperty("--fallback-height", view.height + "px");
-
-    for (const side in nineslice) wrapper.current.style.setProperty(`--fallback-nineslice-${side}`, nineslice[side as keyof typeof nineslice] + "px");
+    wrapper.current?.setFallbackSize(view.width, view.height, nineslice);
   }, [view, isDestroyed]);
 
   // --------------------
@@ -99,7 +102,7 @@ export default function NineslicedFramage({ view, animation, nineslice: nineslic
   };
 
   return !isDestroyed ? (
-    <react-framage ninesliced="" steps={animation ? steps : undefined} frame={animation ? frame : undefined} ref={wrapper}>
+    <react-framage ninesliced ref={wrapper}>
       <NineslicedFramageContext.Provider value={{ frame, steps, animation, imageProps }}>
         {Object.entries(slices).map(([area, sliceView]) => (
           <FramageSlice key={area} main={area === "middle"} view={{ ...view, ...sliceView }} />
@@ -112,7 +115,7 @@ export default function NineslicedFramage({ view, animation, nineslice: nineslic
 function FramageSlice({ view, main }: FramageProps & { main: boolean }) {
   const { frame, steps, animation, imageProps } = useContext(NineslicedFramageContext);
 
-  const wrapper = useRef<HTMLElement>(null);
+  const wrapper = useRef<ReactFramageSliceElement>(null);
   const image = useRef<HTMLImageElement>(null);
 
   useFramageImage(wrapper, image, {

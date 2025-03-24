@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
+
 import { useFramageAnimation, useFramageImage } from "../hooks";
+import { ReactFramageElement } from "../elements";
 import { FramageProps } from "../types";
 
 export type RegularFramageProps = Omit<FramageProps, "nineslice">;
 
 export default function RegularFramage({ view, animation, ...imageProps }: RegularFramageProps) {
-  const wrapper = useRef<HTMLElement>(null);
+  const wrapper = useRef<ReactFramageElement>(null);
   const image = useRef<HTMLImageElement>(null);
 
   const [frame, steps, isDestroyed] = useFramageAnimation(animation);
@@ -18,16 +20,14 @@ export default function RegularFramage({ view, animation, ...imageProps }: Regul
   });
 
   useEffect(() => {
-    if (!wrapper.current) return;
-    wrapper.current.style.setProperty("--fallback-width", view.width + "px");
-    wrapper.current.style.setProperty("--fallback-height", view.height + "px");
+    wrapper.current?.setFallbackSize(view.width, view.height);
   }, [view, isDestroyed]);
 
   // --------------------
   //   Render Framage
   // --------------------
   return !isDestroyed ? (
-    <react-framage ref={wrapper} frame={animation ? frame : undefined} steps={animation ? steps : undefined}>
+    <react-framage ref={wrapper}>
       <img ref={image} {...imageProps} />
     </react-framage>
   ) : null;

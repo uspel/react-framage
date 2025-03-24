@@ -1,15 +1,12 @@
 import { JSX } from "react";
+import { ReactFramageElement, ReactFramageSliceElement } from "./elements";
 
 declare module "react" {
   namespace JSX {
     interface IntrinsicElements {
       /** Wrapper element for the `<Framage>` component. */
-      "react-framage": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
-        frame?: number;
-        steps?: number;
-        ninesliced?: "";
-      };
-      "react-framage-slice": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+      "react-framage": React.DetailedHTMLProps<React.HTMLAttributes<ReactFramageElement>, ReactFramageElement> & { ninesliced?: boolean };
+      "react-framage-slice": React.DetailedHTMLProps<React.HTMLAttributes<ReactFramageSliceElement>, ReactFramageSliceElement>;
     }
   }
 }
